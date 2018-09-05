@@ -18,6 +18,26 @@ p{font-family: Lato;}
   color: rgba(0,0,0,0.4); text-align: center; font-size: 13px;
 }
 
+#footerLink{
+  display:block;
+  text-align:center;
+}
+
+#footerLink p {
+  display:inline-block;
+  text-align:center;
+  padding-right:5px;
+  /*margin;*/
+}
+
+#footerLink a {
+  color:rgba(0,0,0,0.4);
+}
+
+#footerLink a svg {
+  vertical-align:middle;
+}
+
 .main{
   background-color:#ECEFF1;
   height:100vh;
@@ -30,32 +50,37 @@ p{font-family: Lato;}
 } */
 
 /*Github and Powerpoint Row:*/
-.links li {
+.links{
+  text-align:center;
+}
+
+.links ul li {
   /*Creates Horizontal List:*/
   display: inline-block;
   zoom:1;
   *display:inline;
   /*Provides proper spacing for each item.*/
   margin: 0 2.5% 0 2.5%;
+  text-align:center;
 
 }
 
-.links li a{
+.links ul li a{
   /*Changes color of icon:*/
   color:#039BE5;
 }
 
-.links li a svg{
+.links ul li a svg{
   /*Changes size of icon:*/
-  width:100%;
-  height:100%;
+  width:35%;
+  height:35%;
 }
 
 @media screen and (max-width: 991px) {
   /* start of large tablet styles */
 
   /*Social Media Column:*/
-  .links li {
+  .links ul li {
     /*Creates Horizontal List:*/
     display: inline-block;
     zoom:1;
@@ -65,22 +90,22 @@ p{font-family: Lato;}
 
   }
 
-  .links li  a{
+  .links ul li  a{
     /*Changes color of icon:*/
     color:#039BE5;
   }
 
-  .links li a svg{
+  .links ul li a svg{
     /*Changes size of icon:*/
-    width:65%;
-    height:65%;
+    width:35%;
+    height:35%;
   }
 }
 
 @media screen and (max-width: 767px) {
   /* start of medium tablet styles */
   /*Social Media Column:*/
-  .links li {
+  .links ul li {
     /*Creates Horizontal List:*/
     display: inline-block;
     zoom:1;
@@ -90,38 +115,39 @@ p{font-family: Lato;}
 
   }
 
-  .links li  a{
+  .links ul li  a{
     /*Changes color of icon:*/
     color:#039BE5;
   }
 
-  .links li a svg{
+  .links ul li a svg{
     /*Changes size of icon:*/
-    width:55%;
-    height:55%;
+    width:30%;
+    height:30%;
   }
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 479px){
   /* start of phone styles */
   /*Social Media Column:*/
-  .links li {
+  .links ul li{
     /*Creates Horizontal List:*/
-    display: inline-block;
+    display:inline-block;
     zoom:1;
     *display:inline;
     /*Provides proper spacing for each item.*/
-    margin: 0 5% 0 5%;
+    margin:0 5% 0 5%;
 
   }
 
-  .links li  a{
+  .links ul li a{
     /*Changes color of icon:*/
     color:#039BE5;
   }
 
-  .links li a svg{
+  .links ul li a svg{
     /*Changes size of icon:*/
-    width:45%;
-    height:45%;
+    width:20%;
+    height:20%;
   }
+}
