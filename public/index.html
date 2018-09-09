@@ -31,13 +31,14 @@
 
     <!-- CSS/Index.css -->
     <link href="/index.css" rel="stylesheet" type="text/css">
+
   </head>
   <body>
     <div class="main container">
       <div class="row">
         <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
         <div class="center-align">
-          <button id="submitProject" class="btn waves-effect waves-light light-blue darken-1" type="submit" name="submitProject">Upload Project
+          <button id="submitProject" class="btn waves-effect waves-light light-blue darken-1 modal-trigger" data-target="uploadModal">Upload Project
             <i class="material-icons right">send</i>
           </button>
         </div>
@@ -80,30 +81,61 @@
 
     <p id="load">Firebase SDK Loading&hellip;</p>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    <!-- Upload Modal: -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+          <h4 class="center">Upload Project:</h4>
+          <div class="row">
+            <form class="col s12" id="uploadForm" action="#">
+              <div class="row">
+                <div class="input-field col s6">
+                  <i class="material-icons prefix">group</i>
+                  <input placeholder="TeamOne" name="groupName" id="groupName" type="text" required>
+                  <label for="groupName">Name of Group</label>
+                </div>
+                <div class="input-field col s6">
+                  <i class="material-icons prefix">insert_link</i>
+                  <input placeholder="https://github.com/robeartoe/GCPPowerofThree" name="githubLink" id="githubLink" type="text">
+                  <label for="githubLink">Link to Github: (Optional)</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s4">
+                  <i class="material-icons prefix">person</i>
+                  <input placeholder="John Doe" name="groupOne" id="groupOne" type="text">
+                  <label for="GroupOne">Group Member: </label>
+                </div>
+                <div class="input-field col s4">
+                  <i class="material-icons prefix">person</i>
+                  <input placeholder="Alondra Smith" name="groupTwo" id="groupTwo" type="text">
+                  <label for="GroupTwo">Group Member: </label>
+                </div>
+                <div class="input-field col s4">
+                  <i class="material-icons prefix">person</i>
+                  <input placeholder="Alex Sandoval" name="groupThree" id="groupThree" type="text">
+                  <label for="groupThree">Group Member: </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 file-field input-field">
+                  <div class="btn light-blue waves-light">
+                    <span>File</span>
+                    <input class="validate" type="file" name="fileName" accept="image/*" required id="fileLink">
+                  </div>
+                  <div class="file-path-wrapper">
+                    <label for="fileLink">Upload a screenshot of your project: </label>
+                    <input class="file-path validate"  type="text">
+                  </div>
+              </div>
+              </div>
+              <button type="submit" id="submitButton" class="modal-action waves-effect waves-light btn light-blue"><i class="material-icons right">send</i>Submit</button>
+            </form>
+          </div>
+        </div>
+    </div>
 
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-    <script>
-      feather.replace()
-    </script>
+    <!-- JS/Index.js -->
+    <script type="text/javascript" src="/index.js"></script>
+    <script>feather.replace()</script>
   </body>
 </html>

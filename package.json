@@ -1,0 +1,23 @@
+{
+  "name": "gcppowerofthree",
+  "version": "1.0.0",
+  "description": "Power of Three Website",
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^6.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robeartoe/GCPPowerofThree.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robeartoe/GCPPowerofThree/issues"
+  },
+  "homepage": "https://github.com/robeartoe/GCPPowerofThree#readme"
+}
