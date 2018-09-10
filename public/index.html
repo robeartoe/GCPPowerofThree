@@ -10,7 +10,8 @@
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/5.4.2/firebase-auth.js"></script>
     <script defer src="/__/firebase/5.4.2/firebase-database.js"></script>
-    <script defer src="/__/firebase/5.4.2/firebase-messaging.js"></script>
+      <script defer src="/__/firebase/5.4.2/firebase-firestore.js"></script>
+      <script defer src="/__/firebase/5.4.2/firebase-messaging.js"></script>
     <script defer src="/__/firebase/5.4.2/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
@@ -38,14 +39,20 @@
       <div class="row">
         <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
         <div class="center-align">
-          <button id="submitProject" class="btn waves-effect waves-light light-blue darken-1 modal-trigger" data-target="uploadModal">Upload Project
-            <i class="material-icons right">send</i>
-          </button>
+            <button id="uploadButton" class="hide btn waves-effect waves-light light-blue darken-1 modal-trigger" data-target="uploadModal">Upload Project
+                <i class="material-icons right">send</i>
+            </button>
+            <button  id="loginButton" class=" btn waves-effect waves-light light-blue darken-1">Login
+                <i class="material-icons right">person</i>
+            </button>
+            <button  id="logoutButton" class="hide btn waves-effect waves-light light-blue darken-1">Logout
+                <i class="material-icons right">person_outline</i>
+            </button>
         </div>
-        <h3 style="text-align:center; padding-top:2.5%; margin-top:2.5%;">The Power of Three Competition: 2018</h3>
+        <h3 style="text-align:center; ">The Power of Three Competition: 2018</h3>
         <div class="col s12 m10 offset-m1 l10 offset-l1">
           <p>
-            The Power of Three Competition is an event hosted at Cal State Fullerton. Three students work together, with three API's on the Google Cloud Platform, then create an idea in three days. Below is their projects.
+            The Power of Three Competition is an event hosted at Cal State Fullerton. Three students work together, with three API's on the Google Cloud Platform, then create an idea within a week. Below is their projects.
           </p>
           <div class="links">
             <ul>
@@ -78,8 +85,6 @@
       </span>
       <p style="margin:0;">Website created with Firebase and Materialize.</p>
     </div>
-
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
     <!-- Upload Modal: -->
     <div id="uploadModal" class="modal">
