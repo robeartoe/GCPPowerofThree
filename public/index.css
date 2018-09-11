@@ -1,5 +1,6 @@
 html,body {
   background: #039BE5; font-family: Lato, Helvetica, Arial, sans-serif; padding: 0;
+  overflow:auto; height:auto;
 }
 
 h1,h2,h3,h4,h5,h6{font-family: Anton;}
@@ -41,6 +42,8 @@ p{font-family: Lato;}
 .main{
   background-color:#ECEFF1;
   height:100vh;
+  min-height:100%;
+  overflow:auto;
   margin-top:2.5%;
 }
 
@@ -70,7 +73,18 @@ p{font-family: Lato;}
   color:#039BE5;
 }
 
-.links ul li a svg{
+/*.links ul li a svg{*/
+  /*!*Changes size of icon:*!*/
+  /*width:35%;*/
+  /*height:35%;*/
+/*}*/
+
+#githubFeather {
+  width:45%;
+  height:45%;
+}
+
+#ppFeather {
   /*Changes size of icon:*/
   width:35%;
   height:35%;
@@ -90,12 +104,12 @@ p{font-family: Lato;}
 
   }
 
-  .links ul li  a{
-    /*Changes color of icon:*/
-    color:#039BE5;
+  #githubFeather {
+    width:45%;
+    height:45%;
   }
 
-  .links ul li a svg{
+  #ppFeather {
     /*Changes size of icon:*/
     width:35%;
     height:35%;
@@ -115,15 +129,19 @@ p{font-family: Lato;}
 
   }
 
-  .links ul li  a{
-    /*Changes color of icon:*/
-    color:#039BE5;
+  #projectFeather{
+    width:20%;
+    height:20%;
+  }
+  #githubFeather {
+    width:45%;
+    height:45%;
   }
 
-  .links ul li a svg{
+  #ppFeather {
     /*Changes size of icon:*/
-    width:30%;
-    height:30%;
+    width:35%;
+    height:35%;
   }
 }
 
@@ -145,7 +163,12 @@ p{font-family: Lato;}
     color:#039BE5;
   }
 
-  .links ul li a svg{
+  #githubFeather {
+    width:30%;
+    height:30%;
+  }
+
+  #ppFeather {
     /*Changes size of icon:*/
     width:20%;
     height:20%;

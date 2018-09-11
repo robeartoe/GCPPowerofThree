@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Anton|Lato" rel="stylesheet">
@@ -57,23 +58,19 @@
           <div class="links">
             <ul>
               <!-- View this web app code on github. -->
-              <li><a href="https://www.github.com/"><i data-feather="github"></i>Github:</a></li>
+              <li><a href="https://www.github.com/"><i id="githubFeather" data-feather="github"></i>Github:</a></li>
               <!-- View Powerpoint. -->
-              <li><a href="https://www.facebook.com/"><i data-feather="external-link"></i>Powerpoint:</a></li>
+              <li><a href="https://www.facebook.com/"><i id="ppFeather" data-feather="external-link"></i>Powerpoint:</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m6 l6">
-          <div style="text-align:center;">
-            TEST
-          </div>
+        <div id="row1" class="col s12 m6 l6">
+
         </div>
-        <div class="col s12 m6 l6">
-          <div style="text-align:center;">
-            TEST
-          </div>
+        <div id="row2" class="col s12 m6 l6">
+
         </div>
       </div>
       <!-- <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a> -->
@@ -121,6 +118,12 @@
                   <label for="groupThree">Group Member: </label>
                 </div>
               </div>
+              <div class="row">
+                <div class="col s12 file-field input-field">
+                  <i class="material-icons prefix">mode_edit</i>
+                  <textarea id="projectDisc" class="materialize-textarea"></textarea>
+                  <label for="projectDisc">Explain your project: </label>
+                </div>
               <div class="row">
                 <div class="col s12 file-field input-field">
                   <div class="btn light-blue waves-light">
