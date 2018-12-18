@@ -28,7 +28,9 @@
 
     <!-- Icons: -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- <script src="https://unpkg.com/feather-icons"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
 
 
     <!-- CSS/Index.css -->
@@ -36,24 +38,14 @@
 
   </head>
   <body>
-    <div class="main container">
-      <div class="row">
+    <!-- <div class="main"> -->
+      <div class="row" id="intro">
         <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
-        <div class="center-align">
-            <button id="uploadButton" class="hide btn waves-effect waves-light light-blue darken-1 modal-trigger" data-target="uploadModal">Upload Project
-                <i class="material-icons right">send</i>
-            </button>
-            <button  id="loginButton" class=" btn waves-effect waves-light light-blue darken-1">Login
-                <i class="material-icons right">person</i>
-            </button>
-            <button  id="logoutButton" class="hide btn waves-effect waves-light light-blue darken-1">Logout
-                <i class="material-icons right">person_outline</i>
-            </button>
-        </div>
-        <h3 style="text-align:center; ">The Power of Three Competition: 2018</h3>
+
+        <h2 style="text-align:center">The Power of GCP: 2019</h2>
         <div class="col s12 m10 offset-m1 l10 offset-l1">
           <p>
-            The Power of Three Competition is an event hosted at Cal State Fullerton. Three students work together, with three API's on the Google Cloud Platform, then create an idea within a week. Below is their projects.
+            The Power of GCP is an contest hosted at Cal State Fullerton. Students create ideas or integrate current projects with GCP. Below is their projects.
           </p>
           <div class="links">
             <ul>
@@ -63,8 +55,23 @@
               <li><a href="https://www.facebook.com/"><i id="ppFeather" data-feather="external-link"></i>Powerpoint:</a></li>
             </ul>
           </div>
+          <div class="center-align">
+              <button id="uploadButton" class="hide btn waves-effect waves-light light-blue darken-1 modal-trigger" data-target="uploadModal">Upload Project
+                  <i class="material-icons right">send</i>
+              </button>
+              <button  id="loginButton" class=" btn waves-effect waves-light light-blue darken-1">Login
+                  <i class="material-icons right">person</i>
+              </button>
+              <button  id="logoutButton" class="hide btn waves-effect waves-light light-blue darken-1">Logout
+                  <i class="material-icons right">person_outline</i>
+              </button>
+          </div>
         </div>
+        
       </div>
+
+      <!-- TODO: Possibly create some space between them? Maybe blue area OR white space for something else? -->
+
       <div class="row">
         <div id="row1" class="col s12 m6 l6">
 
@@ -74,16 +81,26 @@
         </div>
       </div>
       <!-- <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a> -->
-    </div>
-    <div id="footer">
-      <span id="footerLink">
-        <p>Code Created by Robert Ruiz</p>
-        <a href="https://www.linkedin.com/in/robert-ruiz-993153a1/"><i data-feather="linkedin"></i></a>
-      </span>
-      <p style="margin:0;">Website created with Firebase and Materialize.</p>
-    </div>
+    <!-- </div> -->
+    
+    <footer class="page-footer" id="footer">
+        <div class="row" style="margin-bottom:0px">
+            <div class="col l6 offset-l3 s12">
+                <p>Code Created by Robert Ruiz</p>
+                <p>Website created with Firebase and Materialize.</p>
+  
+            </div>
+            <div class="col l2 offset-l1 s12">
+                <a style="color: #ECEFF1" href="https://www.linkedin.com/in/robert-ruiz-993153a1/"><i data-feather="linkedin"></i></a>
+            </div>
+          
+        </div>
+    </footer>
 
     <!-- Upload Modal: -->
+    <!-- TODO: Update Modal: Change from form to another way to handle form submits. -->
+    <!-- TODO: Update Modal: Move submit button to modal-footer  -->
+    <!-- TODO: Update Modal: Handle case of several group members, or only one member. -->
     <div id="uploadModal" class="modal">
         <div class="modal-content">
           <h4 class="center">Upload Project:</h4>

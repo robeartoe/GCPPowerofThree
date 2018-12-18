@@ -1,6 +1,8 @@
 html,body {
-  background: #039BE5; font-family: Lato, Helvetica, Arial, sans-serif; padding: 0;
-  overflow:auto; height:auto;
+  /* background: #039BE5;  */
+  font-family: Lato, Helvetica, Arial, sans-serif; padding: 0;
+  /* overflow:auto;  */
+  height:auto;
 }
 
 h1,h2,h3,h4,h5,h6{font-family: Anton;}
@@ -9,14 +11,23 @@ p{font-family: Lato;}
 #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
 
 #GCPIcon {
-  width: 15%;
-  height: 15%;
+  /* width: 25%; */
+  height: 35%;
   display: block;
   margin: auto;
 }
 
+#intro{
+  background-color: #039BE5;
+  height:100vh;
+  min-height:100%;
+}
+
+
 #footer{
-  color: rgba(0,0,0,0.4); text-align: center; font-size: 13px;
+  /* color: rgba(0,0,0,0.4);  */
+  background-color: #039BE5;
+  text-align: center; font-size: 13px;
 }
 
 #footerLink{
@@ -46,6 +57,8 @@ p{font-family: Lato;}
   overflow:auto;
   margin-top:2.5%;
 }
+
+
 
 /* #submitProject{
   width: 15%;

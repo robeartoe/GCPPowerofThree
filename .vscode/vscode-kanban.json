@@ -1,0 +1,20 @@
+{
+  "done": [],
+  "in-progress": [],
+  "testing": [],
+  "todo": [
+    {
+      "assignedTo": {
+        "name": "Robert Ruiz"
+      },
+      "creation_time": "2018-12-18T18:38:04.732Z",
+      "description": {
+        "content": "It's only the intro page, and it allows the user to only upload.\n\nIf the user has already uploaded, it'll show the \"Thanks for uploading a project! The voting process will begin soon!\" page.",
+        "mime": "text/markdown"
+      },
+      "id": "1",
+      "references": [],
+      "title": "Create UPLOADING stage of Website"
+    }
+  ]
+}

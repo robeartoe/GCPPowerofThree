@@ -135,12 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
 <p>${docDATA.projectDisc}</p>
 `;
     if (index % 2 === 0) {
-      $('#row1').append('<hr />');
       $('#row1').append(div);
+      $('#row1').append('<div class="divider"></div>');
       feather.replace();
     } else {
-      $('#row2').append('<hr />');
       $('#row2').append(div);
+      $('#row2').append('<div class="divider"></div>');
       feather.replace();
     }
   }
