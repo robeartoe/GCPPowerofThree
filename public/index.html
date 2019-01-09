@@ -24,7 +24,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Anton|Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One|Noto+Sans" rel="stylesheet">
 
     <!-- Icons: -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -42,9 +42,9 @@
       <div class="row" id="intro">
         <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
 
-        <h2 style="text-align:center">The Power of GCP: 2019</h2>
+        <h1 style="text-align:center; color: #ECEFF1">The Power of GCP: 2019</h1>
         <div class="col s12 m10 offset-m1 l10 offset-l1">
-          <p>
+          <p style="text-align:center; color:#ECEFF1">
             The Power of GCP is an contest hosted at Cal State Fullerton. Students create ideas or integrate current projects with GCP. Below is their projects.
           </p>
           <div class="links">
@@ -56,14 +56,14 @@
             </ul>
           </div>
           <div class="center-align">
-              <button id="uploadButton" class="hide btn waves-effect waves-light light-blue darken-1 modal-trigger" data-target="uploadModal">Upload Project
-                  <i class="material-icons right">send</i>
+              <button id="uploadButton" class="hide btn waves-effect waves-light grey lighten-4 modal-trigger" style="color:#039BE5" data-target="uploadModal">Upload Project
+                  <i class="material-icons right" style="color:#039BE5">send</i>
               </button>
-              <button  id="loginButton" class=" btn waves-effect waves-light light-blue darken-1">Login
-                  <i class="material-icons right">person</i>
+              <button  id="loginButton" class=" btn waves-effect waves-light grey lighten-4" style="color:#039BE5">Login
+                  <i class="material-icons right" style="color:#039BE5">person</i>
               </button>
-              <button  id="logoutButton" class="hide btn waves-effect waves-light light-blue darken-1">Logout
-                  <i class="material-icons right">person_outline</i>
+              <button  id="logoutButton" style="color:#039BE5" class="hide btn waves-effect waves-light grey lighten-4">Logout
+                  <i class="material-icons right" style="color:#039BE5">person_outline</i>
               </button>
           </div>
         </div>
@@ -91,7 +91,7 @@
   
             </div>
             <div class="col l2 offset-l1 s12">
-                <a style="color: #ECEFF1" href="https://www.linkedin.com/in/robert-ruiz-993153a1/"><i data-feather="linkedin"></i></a>
+                <a style="color: #ECEFF1" href="https://www.linkedin.com/in/robert-ruiz-993153a1/"><i style="height:15%; width:15%;" data-feather="linkedin"></i></a>
             </div>
           
         </div>
@@ -101,16 +101,16 @@
     <!-- TODO: Update Modal: Change from form to another way to handle form submits. -->
     <!-- TODO: Update Modal: Move submit button to modal-footer  -->
     <!-- TODO: Update Modal: Handle case of several group members, or only one member. -->
-    <div id="uploadModal" class="modal">
+    <div id="uploadModal" class="modal modal-fixed-footer">
         <div class="modal-content">
           <h4 class="center">Upload Project:</h4>
           <div class="row">
             <form class="col s12" id="uploadForm" action="#">
               <div class="row">
                 <div class="input-field col s6">
-                  <i class="material-icons prefix">group</i>
-                  <input placeholder="TeamOne" name="groupName" id="groupName" type="text" required>
-                  <label for="groupName">Name of Group</label>
+                  <i class="material-icons prefix">person</i>
+                  <input placeholder="Martin Sheffield" name="formName" id="formName" type="text" required aria-required="true">
+                  <label for="groupName">Name: </label>
                 </div>
                 <div class="input-field col s6">
                   <i class="material-icons prefix">insert_link</i>
@@ -119,28 +119,19 @@
                 </div>
               </div>
               <div class="row">
-                <div class="input-field col s4">
-                  <i class="material-icons prefix">person</i>
-                  <input placeholder="John Doe" name="groupOne" id="groupOne" type="text">
-                  <label for="GroupOne">Group Member: </label>
-                </div>
-                <div class="input-field col s4">
-                  <i class="material-icons prefix">person</i>
-                  <input placeholder="Alondra Smith" name="groupTwo" id="groupTwo" type="text">
-                  <label for="GroupTwo">Group Member: </label>
-                </div>
-                <div class="input-field col s4">
-                  <i class="material-icons prefix">person</i>
-                  <input placeholder="Alex Sandoval" name="groupThree" id="groupThree" type="text">
-                  <label for="groupThree">Group Member: </label>
+                <div class="col s12 file-field input-field">
+                  <i class="material-icons prefix">mode_edit</i>
+                  <textarea id="projectDisc" class="materialize-textarea" required aria-required="true"></textarea>
+                  <label for="projectDisc">Explain your project: </label>
                 </div>
               </div>
               <div class="row">
                 <div class="col s12 file-field input-field">
                   <i class="material-icons prefix">mode_edit</i>
-                  <textarea id="projectDisc" class="materialize-textarea"></textarea>
-                  <label for="projectDisc">Explain your project: </label>
+                  <textarea id="GCPDisc" class="materialize-textarea" required aria-required="true"></textarea>
+                  <label for="GCPDisc">How you used GCP: </label>
                 </div>
+              </div>
               <div class="row">
                 <div class="col s12 file-field input-field">
                   <div class="btn light-blue waves-light">
@@ -148,14 +139,16 @@
                     <input class="validate" type="file" name="fileName" accept="image/*" required id="fileLink">
                   </div>
                   <div class="file-path-wrapper">
-                    <label for="fileLink">Upload a screenshot of your project: </label>
+                    <label for="fileLink">Upload a screenshot of your project: (Optional) </label>
                     <input class="file-path validate"  type="text">
                   </div>
+                </div>
               </div>
-              </div>
-              <button type="submit" id="submitButton" class="modal-action waves-effect waves-light btn light-blue"><i class="material-icons right">send</i>Submit</button>
             </form>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button id="submitButton" class="modal-action waves-effect waves-light btn light-blue"><i class="material-icons right">send</i>Submit</button>
         </div>
     </div>
 
