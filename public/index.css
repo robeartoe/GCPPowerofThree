@@ -51,6 +51,11 @@ p{font-family: 'Noto Sans';}
   vertical-align:middle;
 }
 
+#footerIcon {
+  width:15%;
+  height:15%;
+}
+
 .main{
   background-color:#ECEFF1;
   height:100vh;
@@ -128,6 +133,10 @@ p{font-family: 'Noto Sans';}
     width:35%;
     height:35%;
   }
+  #footerIcon {
+    width:5%;
+    height:5%;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -144,18 +153,22 @@ p{font-family: 'Noto Sans';}
   }
 
   #projectFeather{
-    width:20%;
-    height:20%;
+    width:10%;
+    height:10%;
   }
   #githubFeather {
-    width:45%;
-    height:45%;
+    width:10%;
+    height:10%;
   }
 
   #ppFeather {
     /*Changes size of icon:*/
-    width:35%;
-    height:35%;
+    width:10%;
+    height:10%;
+  }
+  #footerIcon {
+    width:10%;
+    height:10%;
   }
 }
 
@@ -178,13 +191,13 @@ p{font-family: 'Noto Sans';}
   }
 
   #githubFeather {
-    width:30%;
-    height:30%;
+    width:15%;
+    height:15%;
   }
 
   #ppFeather {
     /*Changes size of icon:*/
-    width:20%;
-    height:20%;
+    width:10%;
+    height:10%;
   }
 }
