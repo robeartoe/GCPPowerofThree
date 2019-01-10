@@ -38,10 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
       signOutButtonElement.classList.remove('hide');
       let modalElement = document.getElementById('uploadModal');
       modalElement.classList.remove('hide');
-      if (submittedUser) {
-        uploadButtonElement.classList.add('hide');
-        modalElement.classList.add('hide');
-      }
+
+      const uid = firebase.auth().currentUser.uid;
+      db.collection('users').doc(uid).get()
+          .then((doc) => {
+            if (doc.data().hasSubmitted) {
+              uploadButtonElement.classList.add('hide');
+              modalElement.classList.add('hide');
+            }
+          })
+          .catch((error) => {
+            M.toast({html: 'There was an error! Try it again; Contact me if it still does not work!'});
+            console.log(error);
+          });
+      // if (submittedUser(user)) {
+      //   console.log('Enters IF');
+      // }
       // Hide sign-in button.
       signInElement.classList.add('hide');
     } else { // User is signed out!
@@ -67,17 +79,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider)
         .then((userCredential) => {
-          db.collection('users')
-              .doc(userCredential.user.uid)
-              .set({
-                hasVoted: false,
-                hasSubmitted: false,
-                UID: userCredential.user.uid,
-              })
-              .then((docRef) => {
-                return docRef;
+          db.collection('users').doc(userCredential.user.uid).get()
+              .then((snapshot) => {
+                if (snapshot.exists) {
+                  return null;
+                } else {
+                  db.collection('users')
+                      .doc(userCredential.user.uid)
+                      .set({
+                        hasVoted: false,
+                        hasSubmitted: false,
+                        UID: userCredential.user.uid,
+                      })
+                      .then((docRef) => {
+                        return docRef;
+                      })
+                      .catch((error) => {
+                        return error;
+                      });
+                }
               })
               .catch((error) => {
+                console.log(error);
                 return error;
               });
         })
@@ -217,31 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
   }
 
-  /** Checks if user has submitted a project already.
-   * Edits button so that it doesn't fire a modal, and fires Toast.
-  */
-  function submittedUser() {
-    const user = firebase.auth().currentUser;
-    console.log(user);
-    if (user) {
-      console.log(user);
-      const uid = firebase.auth().currentUser.uid;
-      db.collection.get('users').doc(uid).get()
-          .then((doc) => {
-            console.log(doc);
-            if (doc.hasSubmitted) {
-              return true;
-            }
-            return false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    }
-
-    // M.toast({html: 'Test Toast!'});
-    // return true;
-  }
 
   /** Display Project: */
   function displayProject() {
@@ -250,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
           let index = 0;
           querySnapshot.forEach( (doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, ' => ', doc.data());
+            // console.log(doc.id, ' => ', doc.data());
             projectHTML(doc.data(), index);
             index++;
             return null;
@@ -266,15 +264,19 @@ document.addEventListener('DOMContentLoaded', () => {
    * @param {int} index
    */
   function projectHTML(docDATA, index) {
-    console.log(docDATA);
+    let githubLink = '';
+    if (docDATA.githubLink.length != 0) {
+      githubLink = `<a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>`;
+    }
+
     let div = document.createElement('div');
     div.className = 'row';
     div.style = 'text-align:center';
     div.innerHTML = `<h3>${docDATA.name}</h3>
-<a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>
-<img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>
-<p>${docDATA.projectDisc}</p>
-<p>${docDATA.GCPDisc}</p>`;
+    ${githubLink}
+    <img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>
+    <p>${docDATA.projectDisc}</p>
+    <p>${docDATA.GCPDisc}</p>`;
 
     if (index % 2 === 0) {
       $('#row1').append(div);
@@ -302,7 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initialize Firebase:
   authUser();
-  submittedUser();
   displayProject();
 });
 
