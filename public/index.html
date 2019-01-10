@@ -40,22 +40,16 @@
   <body>
     <!-- <div class="main"> -->
       <div class="row" id="intro">
-        <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
+        <a href="https://cloud.google.com/"> 
+          <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
+        </a>
 
         <h1 style="text-align:center; color: #ECEFF1">The Power of GCP: 2019</h1>
         <div class="col s12 m10 offset-m1 l10 offset-l1">
           <p style="text-align:center; color:#ECEFF1">
-            The Power of GCP is an contest hosted at Cal State Fullerton. Students create ideas or integrate current projects with GCP. Below is their projects.
+            The Power of GCP is an contest hosted at Cal State Fullerton. Students create ideas or integrate current projects with the Google Cloud Platform. Below is their projects.
           </p>
-          <div class="links">
-            <ul>
-              <!-- View this web app code on github. -->
-              <li><a href="https://www.github.com/"><i id="githubFeather" data-feather="github"></i>Github:</a></li>
-              <!-- View Powerpoint. -->
-              <li><a href="https://www.facebook.com/"><i id="ppFeather" data-feather="external-link"></i>Powerpoint:</a></li>
-            </ul>
-          </div>
-          <div class="center-align">
+          <div class="center-align" style="padding-top:2.5%;">
               <button id="uploadButton" class="hide btn waves-effect waves-light grey lighten-4 modal-trigger" style="color:#039BE5" data-target="uploadModal">Upload Project
                   <i class="material-icons right" style="color:#039BE5">send</i>
               </button>
@@ -65,6 +59,9 @@
               <button  id="logoutButton" style="color:#039BE5" class="hide btn waves-effect waves-light grey lighten-4">Logout
                   <i class="material-icons right" style="color:#039BE5">person_outline</i>
               </button>
+          </div>
+          <div class="center-align" style="padding-top:1%;">
+            <h5><a style="color: #ECEFF1" href="https://docs.google.com/forms/d/e/1FAIpQLSdG-vB17mtFTySToS7V04WGmAXS8lMWFSaWSuUeJEU7XCajCA/viewform?entry.1895469608=Robert+Ruiz&entry.1421139163=Power+of+GCP&entry.1901687729=Power+of+GCP&entry.1607264656=Power+of+GCP"> Want $100 in free credits? </a></h5>
           </div>
         </div>
         
@@ -92,15 +89,13 @@
             </div>
             <div class="col l2 offset-l1 s12">
                 <a style="color: #ECEFF1" href="https://www.linkedin.com/in/robert-ruiz-993153a1/"><i style="height:15%; width:15%;" data-feather="linkedin"></i></a>
+                <a style="color: #ECEFF1" href="https://github.com/robeartoe/GCPPowerofThree"><i style="height:15%; width:15%;" data-feather="github"></i></a>
             </div>
           
         </div>
     </footer>
 
     <!-- Upload Modal: -->
-    <!-- TODO: Update Modal: Change from form to another way to handle form submits. -->
-    <!-- TODO: Update Modal: Move submit button to modal-footer  -->
-    <!-- TODO: Update Modal: Handle case of several group members, or only one member. -->
     <div id="uploadModal" class="modal modal-fixed-footer">
         <div class="modal-content">
           <h4 class="center">Upload Project:</h4>

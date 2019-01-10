@@ -36,7 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Show user's profile and sign-out button.
       uploadButtonElement.classList.remove('hide');
       signOutButtonElement.classList.remove('hide');
-
+      let modalElement = document.getElementById('uploadModal');
+      modalElement.classList.remove('hide');
+      if (submittedUser) {
+        uploadButtonElement.classList.add('hide');
+        modalElement.classList.add('hide');
+      }
       // Hide sign-in button.
       signInElement.classList.add('hide');
     } else { // User is signed out!
@@ -215,7 +220,24 @@ document.addEventListener('DOMContentLoaded', () => {
   /** Checks if user has submitted a project already.
    * Edits button so that it doesn't fire a modal, and fires Toast.
   */
-  function userSubmitted() {
+  function submittedUser() {
+    const user = firebase.auth().currentUser;
+    console.log(user);
+    if (user) {
+      console.log(user);
+      const uid = firebase.auth().currentUser.uid;
+      db.collection.get('users').doc(uid).get()
+          .then((doc) => {
+            console.log(doc);
+            if (doc.hasSubmitted) {
+              return true;
+            }
+            return false;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
 
     // M.toast({html: 'Test Toast!'});
     // return true;
@@ -248,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let div = document.createElement('div');
     div.className = 'row';
     div.style = 'text-align:center';
-    div.innerHTML = `<h4>${docDATA.name}</h4>
+    div.innerHTML = `<h3>${docDATA.name}</h3>
 <a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>
 <img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>
 <p>${docDATA.projectDisc}</p>
@@ -273,13 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let submitElement = document.getElementById('submitButton');
 
   // Saves message on form submit.
-  uploadButtonElement.addEventListener('click', userSubmitted);
+  // uploadButtonElement.addEventListener('click', submittedUser);
   signOutButtonElement.addEventListener('click', logoutUser);
   signInElement.addEventListener('click', loginUser);
   submitElement.addEventListener('click', submitProject);
 
   // initialize Firebase:
   authUser();
+  submittedUser();
   displayProject();
 });
 
