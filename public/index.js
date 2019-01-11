@@ -48,12 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           })
           .catch((error) => {
-            M.toast({html: 'There was an error! Try it again; Contact me if it still does not work!'});
-            console.log(error);
+            M.toast({html: 'Signed in! Have not submitted a project yet!'});
           });
-      // if (submittedUser(user)) {
-      //   console.log('Enters IF');
-      // }
       // Hide sign-in button.
       signInElement.classList.add('hide');
     } else { // User is signed out!
@@ -167,8 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
           GCPDisc: GCPDisc,
         }).then((docRef) => {
           // Update User:
-          console.log(docRef);
-
           db.collection('users').doc(uid).update({
             hasSubmitted: true,
           })
@@ -248,7 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
           let index = 0;
           querySnapshot.forEach( (doc) => {
             // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, ' => ', doc.data());
             projectHTML(doc.data(), index);
             index++;
             return null;
@@ -268,13 +261,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (docDATA.githubLink.length != 0) {
       githubLink = `<a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>`;
     }
+    let imageURL = '';
+    if (docDATA.imageURL != null) {
+      imageURL = `<img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>`;
+    }
 
     let div = document.createElement('div');
     div.className = 'row';
     div.style = 'text-align:center';
     div.innerHTML = `<h3>${docDATA.name}</h3>
     ${githubLink}
-    <img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>
+    ${imageURL}
     <p>${docDATA.projectDisc}</p>
     <p>${docDATA.GCPDisc}</p>`;
 
