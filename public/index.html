@@ -40,9 +40,7 @@
   <body>
     <!-- <div class="main"> -->
       <div class="row" id="intro">
-        <a href="https://cloud.google.com/"> 
-          <img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt="">
-        </a>
+        <a href="https://cloud.google.com/"><img id="GCPIcon" src="/Images/logo_gcp/logo_gcp_hexagon_rgb.png" alt=""></a>
 
         <h1 style="text-align:center; color: #ECEFF1">The Power of GCP: 2019</h1>
         <div class="col s12 m10 offset-m1 l10 offset-l1">
@@ -50,9 +48,6 @@
             The Power of GCP is an contest hosted at Cal State Fullerton. Students create ideas or integrate current projects with the Google Cloud Platform. Below is their projects.
           </p>
           <div class="center-align" style="padding-top:2.5%;">
-              <button id="uploadButton" class="hide btn waves-effect waves-light grey lighten-4 modal-trigger" style="color:#039BE5" data-target="uploadModal">Upload Project
-                  <i class="material-icons right" style="color:#039BE5">send</i>
-              </button>
               <button  id="loginButton" class=" btn waves-effect waves-light grey lighten-4" style="color:#039BE5">Login
                   <i class="material-icons right" style="color:#039BE5">person</i>
               </button>
@@ -66,8 +61,6 @@
         </div>
         
       </div>
-
-      <!-- TODO: Possibly create some space between them? Maybe blue area OR white space for something else? -->
 
       <div class="row">
         <div id="row1" class="col s12 m6 l6">
@@ -96,7 +89,7 @@
     </footer>
 
     <!-- Upload Modal: -->
-    <div id="uploadModal" class="modal modal-fixed-footer">
+    <div id="confirmVote" class="modal modal-fixed-footer">
         <div class="modal-content">
           <h4 class="center">Upload Project:</h4>
           <div class="row">
@@ -143,9 +136,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button id="submitButton" class="modal-action waves-effect waves-light btn light-blue"><i class="material-icons right">send</i>Submit</button>
+          <button id="submitVote" class="modal-action waves-effect waves-light btn light-blue"><i class="material-icons right">send</i>Submit</button>
         </div>
-    </div>
+      </div>
 
     <!-- JS/Index.js -->
     <script type="text/javascript" src="/index.js"></script>

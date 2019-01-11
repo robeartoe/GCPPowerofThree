@@ -34,31 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) { // User is signed in!
       // Set the user's profile pic and name.
       // Show user's profile and sign-out button.
-      uploadButtonElement.classList.remove('hide');
       signOutButtonElement.classList.remove('hide');
-      let modalElement = document.getElementById('uploadModal');
-      modalElement.classList.remove('hide');
 
-      const uid = firebase.auth().currentUser.uid;
-      db.collection('users').doc(uid).get()
-          .then((doc) => {
-            if (doc.data().hasSubmitted) {
-              uploadButtonElement.classList.add('hide');
-              modalElement.classList.add('hide');
-            }
-          })
-          .catch((error) => {
-            M.toast({html: 'There was an error! Try it again; Contact me if it still does not work!'});
-            console.log(error);
-          });
-      // if (submittedUser(user)) {
-      //   console.log('Enters IF');
-      // }
       // Hide sign-in button.
       signInElement.classList.add('hide');
     } else { // User is signed out!
       // Hide user's profile and sign-out button.
-      uploadButtonElement.classList.add('hide');
       signOutButtonElement.classList.add('hide');
 
       // Show sign-in button.
@@ -120,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * @param {eventListener} e
    * @return {null}
   */
-  function submitProject(e) {
+  function submitVote(e) {
     // Prevent from sending:
     e.preventDefault();
 
@@ -271,12 +252,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let div = document.createElement('div');
     div.className = 'row';
-    div.style = 'text-align:center';
-    div.innerHTML = `<h3>${docDATA.name}</h3>
-    ${githubLink}
-    <img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>
-    <p>${docDATA.projectDisc}</p>
-    <p>${docDATA.GCPDisc}</p>`;
+    div.style = 'text-align:center; padding-top:0px;';
+    div.innerHTML = `
+    <div class="card">
+      <div class="card-image">
+        <img src=${docDATA.imageURL} alt='ProjectScreenshot'>
+        <span class='card-title'>${docDATA.name}</span>
+        <a class='btn-floating halfway-fab waves-effect waves-light light-blue darken-1'> <i class='material-icons'> add </i> </a>
+      </div>
+      <div class='card-content'>
+        ${githubLink}
+        <p>${docDATA.projectDisc}</p>
+        <p>${docDATA.GCPDisc}</p>
+      </div>
+    </div>`;
 
     if (index % 2 === 0) {
       $('#row1').append(div);
@@ -291,16 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Event Listeners:
   // Shortcuts to DOM Elements:
-  let uploadButtonElement = document.getElementById('uploadButton');
   let signOutButtonElement = document.getElementById('logoutButton');
   let signInElement = document.getElementById('loginButton');
-  let submitElement = document.getElementById('submitButton');
+  let submitElement = document.getElementById('submitVote');
 
   // Saves message on form submit.
   // uploadButtonElement.addEventListener('click', submittedUser);
   signOutButtonElement.addEventListener('click', logoutUser);
   signInElement.addEventListener('click', loginUser);
-  submitElement.addEventListener('click', submitProject);
+  submitElement.addEventListener('click', submitVote);
 
   // initialize Firebase:
   authUser();
