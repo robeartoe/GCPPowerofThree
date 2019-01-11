@@ -253,27 +253,48 @@ document.addEventListener('DOMContentLoaded', () => {
     let div = document.createElement('div');
     div.className = 'row';
     div.style = 'text-align:center; padding-top:0px;';
-    div.innerHTML = `
-    <div class="card">
-      <div class="card-image">
-        <img src=${docDATA.imageURL} alt='ProjectScreenshot'>
-        <span class='card-title'>${docDATA.name}</span>
-        <a class='btn-floating halfway-fab waves-effect waves-light light-blue darken-1'> <i class='material-icons'> add </i> </a>
+
+    console.log(docDATA);
+    console.log(docDATA.imageURL);
+    if (docDATA.imageURL === undefined) {
+      if (docDATA.githubLink.length != 0) {
+        githubLink = `<a href=${docDATA.githubLink} style="color:#ECEFF1;"><i id="projectFeather" data-feather="github"></i></a>`;
+      }
+      div.innerHTML = `<div class='card light-blue darken-1'>
+        <div class='card-content white-text'>
+          <a class='btn-floating halfway-fab waves-effect waves-light grey lighten-4'> <i class='material-icons' style="color: #039BE5"> add </i> </a>
+
+          <span class="card-title">${docDATA.name}</span>
+          ${githubLink}
+          <p>${docDATA.projectDisc}</p>
+          <p>${docDATA.GCPDisc}</p>
+        </div>
       </div>
-      <div class='card-content'>
-        ${githubLink}
-        <p>${docDATA.projectDisc}</p>
-        <p>${docDATA.GCPDisc}</p>
-      </div>
-    </div>`;
+      `;
+    } else {
+      div.innerHTML = `
+        <div class="card">
+          <div class="card-image">
+            <img src=${docDATA.imageURL} alt='ProjectScreenshot'>
+            <span class='card-title'>${docDATA.name}</span>
+            <a class='btn-floating halfway-fab waves-effect waves light-blue darken-1'> <i class='material-icons'> add </i> </a>
+          </div>
+          <div class='card-content'>
+            ${githubLink}
+            <p>${docDATA.projectDisc}</p>
+            <p>${docDATA.GCPDisc}</p>
+          </div>
+        </div>`;
+    }
+
 
     if (index % 2 === 0) {
       $('#row1').append(div);
-      $('#row1').append('<div class="divider"></div>');
+      // $('#row1').append('<div class="divider"></div>');
       feather.replace();
     } else {
       $('#row2').append(div);
-      $('#row2').append('<div class="divider"></div>');
+      // $('#row2').append('<div class="divider"></div>');
       feather.replace();
     }
   }
