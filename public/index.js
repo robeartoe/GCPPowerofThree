@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hasSubmitted: true,
           })
               .then((docref) => {
-                M.toast({html: 'Thank you! Refresh the page and you should see your project!'});
+                console.log('docRef');
               })
               .catch((error) => {
                 console.log(error);
@@ -180,6 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Uploads file to Firebase Storage: (If image is provided)
     if (image != null) {
+      M.toast({html: 'Please wait for your image to be uploaded! Please refresh your page!'});
+
       uploadFile(image).then((data) => {
         db.collection('projects').doc(uid)
             .update({
@@ -198,8 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(error);
             M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
           });
+    } else {
+      M.toast({html: 'Thank you! Refresh your page and you should see your project!'});
     }
-
+    // M.toast({html: 'Thank you! Refresh your page and you should see your project!'});
     let Modal = M.Modal.getInstance(elem);
     Modal.close();
   }
@@ -261,27 +265,49 @@ document.addEventListener('DOMContentLoaded', () => {
     if (docDATA.githubLink.length != 0) {
       githubLink = `<a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>`;
     }
-    let imageURL = '';
-    if (docDATA.imageURL != null) {
-      imageURL = `<img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>`;
-    }
+
+    // let imageURL = '';
+    // if (docDATA.imageURL != null) {
+    //   imageURL = `<img src=${docDATA.imageURL} alt='ProjectScreenshot' height='45%' width='65%'>`;
+    // }
 
     let div = document.createElement('div');
     div.className = 'row';
-    div.style = 'text-align:center';
-    div.innerHTML = `<h3>${docDATA.name}</h3>
-    ${githubLink}
-    ${imageURL}
-    <p>${docDATA.projectDisc}</p>
-    <p>${docDATA.GCPDisc}</p>`;
+    div.style = 'text-align:center; padding-top:0px;';
+
+    if (docDATA.imageURL === undefined) {
+      if (docDATA.githubLink.length != 0) {
+        githubLink = `<a href=${docDATA.githubLink} style="color:#ECEFF1;"><i id="projectFeather" data-feather="github"></i></a>`;
+      }
+      div.innerHTML = `<div class='card light-blue darken-1'>
+        <div class='card-content white-text'>
+          <span class="card-title">${docDATA.name} </span>
+          ${githubLink}
+          <p>${docDATA.projectDisc}</p>
+          <p>${docDATA.GCPDisc}</p>
+        </div>
+      </div>
+      `;
+    } else {
+      div.innerHTML = `
+        <div class="card">
+          <div class="card-image">
+            <img src=${docDATA.imageURL} alt='ProjectScreenshot'>
+            <span class='card-title'>${docDATA.name}</span>
+          </div>
+          <div class='card-content'>
+            ${githubLink}
+            <p>${docDATA.projectDisc}</p>
+            <p>${docDATA.GCPDisc}</p>
+          </div>
+        </div>`;
+    }
 
     if (index % 2 === 0) {
       $('#row1').append(div);
-      $('#row1').append('<div class="divider"></div>');
       feather.replace();
     } else {
       $('#row2').append(div);
-      $('#row2').append('<div class="divider"></div>');
       feather.replace();
     }
   }
