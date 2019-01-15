@@ -104,88 +104,70 @@ document.addEventListener('DOMContentLoaded', () => {
   function submitVote(e) {
     // Prevent from sending:
     e.preventDefault();
+    let elem = document.getElementById('confirmVote');
+    let input = document.getElementById('inputID');
 
-    // Get Upload Modal and close it:
-    let elem = document.getElementById('uploadModal');
-    const form = document.getElementById('uploadForm');
 
-    console.log(elem);
-    console.log(form);
-
-    // Add User's project:
-    const name = document.getElementById('formName').value;
-    const projDisc = document.getElementById('projectDisc').value;
-    const GCPDisc = document.getElementById('GCPDisc').value;
-
-    // Validation(Required):
-    if (name === '') {
-      M.toast({html: 'Name can not be Empty!'});
-      return null;
-    }
-    if (projDisc === '') {
-      M.toast({html: 'Project Discription can not be Empty!'});
-      return null;
-    }
-    if ( GCPDisc === '') {
-      M.toast({html: 'GCP Discription can not be Empty!'});
-      return null;
-    }
-
-    const githubLink = document.getElementById('githubLink').value;
-
-    let image = document.getElementById('fileLink').files[0];
-    let imageURL = '';
-    let storageUri = '';
-
-    // Upload Project:
+    // Cast Vote:
     const uid = firebase.auth().currentUser.uid;
-    db.collection('projects')
-        .doc(uid)
-        .set({
-          name: name,
-          githubLink: githubLink,
-          projectDisc: projDisc,
-          GCPDisc: GCPDisc,
-        }).then((docRef) => {
-          // Update User:
-          console.log(docRef);
+    let proj = db.collection('projects').doc(input.value);
+    let user = db.collection('users').doc(uid);
 
-          db.collection('users').doc(uid).update({
-            hasSubmitted: true,
-          })
-              .then((docref) => {
-                M.toast({html: 'Thank you! Refresh the page and you should see your project!'});
-              })
-              .catch((error) => {
-                console.log(error);
-                M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
-              });
-        }).catch((error) => {
-          console.log(error);
-          M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
-        });
+    db.runTransaction(function(transaction) {
+      // This code may get re-run multiple times if there are conflicts.
+      return transaction.get(proj).then(function(projDoc) {
+          if (!projDoc.exists) {
+              throw "Document does not exist!";
+          }
 
-    // Uploads file to Firebase Storage: (If image is provided)
-    if (image != null) {
-      uploadFile(image).then((data) => {
-        db.collection('projects').doc(uid)
-            .update({
-              imageURL: data.imageURL,
-              storageUri: data.storageUri,
-            })
-            .then((docRef) => {
-              M.toast({html: 'Your file has been uploaded!'});
-            })
-            .catch((error) => {
-              console.log(error);
-              M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
-            });
-      })
-          .catch((error)=> {
-            console.log(error);
-            M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
-          });
-    }
+          console.log(projDoc);
+          console.log(projDoc.data());
+          console.log(projDoc.data().votes);
+
+          let newPopulation = 1;
+
+          if (projDoc.data().votes == null){
+            transaction.update(proj, { votes: newPopulation });
+          }
+          else{
+            let newVote = projDoc.data().votes + 1;
+            transaction.update(proj, { votes: newVote });
+          }
+
+          transaction.update(user,{hasVoted: true});
+
+      });
+    }).then(function() {
+        console.log("Transaction successfully committed!");
+    }).catch(function(error) {
+        console.log("Transaction failed: ", error);
+    });
+
+    // db.collection('projects')
+    //     .doc(input)
+    //     .update({
+    //       name: name,
+    //       githubLink: githubLink,
+    //       projectDisc: projDisc,
+    //       GCPDisc: GCPDisc,
+    //     }).then((docRef) => {
+    //       // Update User:
+    //       console.log(docRef);
+
+    //       db.collection('users').doc(uid).update({
+    //         hasSubmitted: true,
+    //       })
+    //           .then((docref) => {
+    //             M.toast({html: 'Thank you! Refresh the page and you should see your project!'});
+    //           })
+    //           .catch((error) => {
+    //             console.log(error);
+    //             M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
+    //           });
+    //     }).catch((error) => {
+    //       console.log(error);
+    //       M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
+    //     });
 
     let Modal = M.Modal.getInstance(elem);
     Modal.close();
@@ -227,10 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
     db.collection('projects').get()
         .then((querySnapshot) => {
           let index = 0;
+          // console.log(querySnapshot);
           querySnapshot.forEach( (doc) => {
+            // console.log(doc);
             // doc.data() is never undefined for query doc snapshots
             // console.log(doc.id, ' => ', doc.data());
-            projectHTML(doc.data(), index);
+            projectHTML(doc.id, doc.data(), index);
             index++;
             return null;
           });
@@ -240,19 +224,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
   }
 
+  function setModalID(event) {
+    event.preventDefault();
+
+    const projectID = event.path[4].id;
+
+    let submitForm = document.getElementById('voteForm').elements;
+    submitForm['projectID'].value = projectID;
+  }
+
+
   /** Outputs data from DB to HTML
+   * @param {string} docID
    * @param {docRef} docDATA
    * @param {int} index
    */
-  function projectHTML(docDATA, index) {
+  function projectHTML(docID, docDATA, index) {
     let githubLink = '';
     if (docDATA.githubLink.length != 0) {
       githubLink = `<a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>`;
     }
 
+    const projName = `project${index}`;
+    const projButton = `projectBtn${index}`;
+
+
     let div = document.createElement('div');
     div.className = 'row';
     div.style = 'text-align:center; padding-top:0px;';
+    div.id = docID;
 
     console.log(docDATA);
     console.log(docDATA.imageURL);
@@ -262,9 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       div.innerHTML = `<div class='card light-blue darken-1'>
         <div class='card-content white-text'>
-          <a class='btn-floating halfway-fab waves-effect waves-light grey lighten-4'> <i class='material-icons' style="color: #039BE5"> add </i> </a>
+          <a href="#confirmVote" id=${projButton} class='modal-trigger btn-floating halfway-fab waves-effect waves-light grey lighten-4'> <i class='material-icons' style="color: #039BE5"> add </i> </a>
 
-          <span class="card-title">${docDATA.name}</span>
+          <span class="card-title" id="${projName}">${docDATA.name} </span>
           ${githubLink}
           <p>${docDATA.projectDisc}</p>
           <p>${docDATA.GCPDisc}</p>
@@ -276,8 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="card">
           <div class="card-image">
             <img src=${docDATA.imageURL} alt='ProjectScreenshot'>
-            <span class='card-title'>${docDATA.name}</span>
-            <a class='btn-floating halfway-fab waves-effect waves light-blue darken-1'> <i class='material-icons'> add </i> </a>
+            <span class='card-title' id="${projName}">${docDATA.name}</span>
+            <a href="#confirmVote" id=${projButton} class='modal-trigger btn-floating halfway-fab waves-effect waves light-blue darken-1'> <i class='material-icons'> add </i> </a>
           </div>
           <div class='card-content'>
             ${githubLink}
@@ -297,6 +297,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // $('#row2').append('<div class="divider"></div>');
       feather.replace();
     }
+
+    let anchorButton = document.getElementById(projButton);
+    anchorButton.addEventListener('click', setModalID);
   }
 
   // Event Listeners:
@@ -306,7 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let submitElement = document.getElementById('submitVote');
 
   // Saves message on form submit.
-  // uploadButtonElement.addEventListener('click', submittedUser);
   signOutButtonElement.addEventListener('click', logoutUser);
   signInElement.addEventListener('click', loginUser);
   submitElement.addEventListener('click', submitVote);

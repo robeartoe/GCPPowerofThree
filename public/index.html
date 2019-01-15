@@ -89,56 +89,20 @@
     </footer>
 
     <!-- Upload Modal: -->
-    <div id="confirmVote" class="modal modal-fixed-footer">
+    <div id="confirmVote" class="modal">
         <div class="modal-content">
-          <h4 class="center">Upload Project:</h4>
-          <div class="row">
-            <form class="col s12" id="uploadForm" action="#">
-              <div class="row">
-                <div class="input-field col s6">
-                  <i class="material-icons prefix">person</i>
-                  <input placeholder="Martin Sheffield" name="formName" id="formName" type="text" required aria-required="true">
-                  <label for="groupName">Name: </label>
-                </div>
-                <div class="input-field col s6">
-                  <i class="material-icons prefix">insert_link</i>
-                  <input placeholder="https://github.com/robeartoe/GCPPowerofThree" name="githubLink" id="githubLink" type="text">
-                  <label for="githubLink">Link to Github: (Optional)</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s12 file-field input-field">
-                  <i class="material-icons prefix">mode_edit</i>
-                  <textarea id="projectDisc" class="materialize-textarea" required aria-required="true"></textarea>
-                  <label for="projectDisc">Explain your project: </label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s12 file-field input-field">
-                  <i class="material-icons prefix">mode_edit</i>
-                  <textarea id="GCPDisc" class="materialize-textarea" required aria-required="true"></textarea>
-                  <label for="GCPDisc">How you used GCP: </label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s12 file-field input-field">
-                  <div class="btn light-blue waves-light">
-                    <span>File</span>
-                    <input class="validate" type="file" name="fileName" accept="image/*" required id="fileLink">
-                  </div>
-                  <div class="file-path-wrapper">
-                    <label for="fileLink">Upload a screenshot of your project: (Optional) </label>
-                    <input class="file-path validate"  type="text">
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+          <h4>Vote:</h4>
+          <p>Do you want to vote for this project?</p>
+          <p>Warning: You can only vote once! Make sure you're certain!</p> 
+          <form id="voteForm">
+              <input type="hidden" name="projectID" id="inputID"/>   
+          </form>
         </div>
         <div class="modal-footer">
           <button id="submitVote" class="modal-action waves-effect waves-light btn light-blue"><i class="material-icons right">send</i>Submit</button>
+          <button id="cancelVote" href="#!" class="modal-close waves-effect waves-blue btn waves-light grey "><i class="material-icons right">cancel</i>Cancel</button>
         </div>
-      </div>
+    </div>
 
     <!-- JS/Index.js -->
     <script type="text/javascript" src="/index.js"></script>
