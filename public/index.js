@@ -113,61 +113,48 @@ document.addEventListener('DOMContentLoaded', () => {
     let proj = db.collection('projects').doc(input.value);
     let user = db.collection('users').doc(uid);
 
-    db.runTransaction(function(transaction) {
+    // Check if user has voted:
+    user.get().then((docRef) => {
+      if (docRef.data().hasVoted) {
+        M.toast({html: 'You have voted already!'});
+        return null;
+      }
+    })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    db.runTransaction((transaction) => {
       // This code may get re-run multiple times if there are conflicts.
-      return transaction.get(proj).then(function(projDoc) {
-          if (!projDoc.exists) {
-              throw "Document does not exist!";
-          }
+      return transaction.get(proj).then((projDoc) => {
+        if (!projDoc.exists) {
+          throw 'Document does not exist!';
+        }
 
-          console.log(projDoc);
-          console.log(projDoc.data());
+        console.log(projDoc);
+        console.log(projDoc.data());
+        console.log(projDoc.data().votes);
+
+        let newPopulation = 1;
+
+        if (projDoc.data().votes == null) {
+          transaction.update(proj, {votes: newPopulation});
+        } else {
           console.log(projDoc.data().votes);
+          let newVote = projDoc.data().votes + 1;
+          console.log(newVote);
+          transaction.update(proj, {votes: newVote});
+        }
 
-          let newPopulation = 1;
-
-          if (projDoc.data().votes == null){
-            transaction.update(proj, { votes: newPopulation });
-          }
-          else{
-            let newVote = projDoc.data().votes + 1;
-            transaction.update(proj, { votes: newVote });
-          }
-
-          transaction.update(user,{hasVoted: true});
-
+        transaction.update(user, {hasVoted: true});
       });
-    }).then(function() {
-        console.log("Transaction successfully committed!");
-    }).catch(function(error) {
-        console.log("Transaction failed: ", error);
+    }).then(() => {
+      M.toast({html: 'You have casted your vote! Results will be announced soon! Thank you!'});
+      return null;
+      console.log('Transaction successfully committed!');
+    }).catch((error) => {
+      console.log('Transaction failed: ', error);
     });
-
-    // db.collection('projects')
-    //     .doc(input)
-    //     .update({
-    //       name: name,
-    //       githubLink: githubLink,
-    //       projectDisc: projDisc,
-    //       GCPDisc: GCPDisc,
-    //     }).then((docRef) => {
-    //       // Update User:
-    //       console.log(docRef);
-
-    //       db.collection('users').doc(uid).update({
-    //         hasSubmitted: true,
-    //       })
-    //           .then((docref) => {
-    //             M.toast({html: 'Thank you! Refresh the page and you should see your project!'});
-    //           })
-    //           .catch((error) => {
-    //             console.log(error);
-    //             M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
-    //           });
-    //     }).catch((error) => {
-    //       console.log(error);
-    //       M.toast({html: 'There was an error. Try it again! Please get in touch if it happens again!'});
-    //     });
 
     let Modal = M.Modal.getInstance(elem);
     Modal.close();
@@ -209,11 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
     db.collection('projects').get()
         .then((querySnapshot) => {
           let index = 0;
-          // console.log(querySnapshot);
           querySnapshot.forEach( (doc) => {
-            // console.log(doc);
             // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, ' => ', doc.data());
             projectHTML(doc.id, doc.data(), index);
             index++;
             return null;
