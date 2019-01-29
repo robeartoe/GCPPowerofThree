@@ -319,6 +319,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let signInElement = document.getElementById('loginButton');
   let submitElement = document.getElementById('submitButton');
 
+  let fadeBegin = 25;
+  let fadeFinish = 50;
+  let fadingElement = document.getElementById('GCPIcon');
+
+  window.addEventListener('scroll', () => {
+    let offset = $(document).scrollTop(); let opacity = 0;
+    if ( offset <= fadeBegin ) {
+      opacity = 1;
+    } else if ( offset <= fadeFinish ) {
+      opacity = 1 - offset / fadeFinish;
+    }
+    fadingElement.style['opacity'] = opacity;
+  });
+
   // Saves message on form submit.
   // uploadButtonElement.addEventListener('click', submittedUser);
   signOutButtonElement.addEventListener('click', logoutUser);

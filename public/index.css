@@ -11,8 +11,12 @@ p{font-family: 'Noto Sans';}
 
 #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
 
+#logo{
+  margin-bottom: 0px;
+}
+
 #GCPIcon {
-  /* width: 25%; */
+  width: 35%;
   height: 35%;
   display: block;
   margin: auto;
