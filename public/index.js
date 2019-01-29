@@ -286,6 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
     anchorButton.addEventListener('click', setModalID);
   }
 
+  function GCPIcon() {
+
+  }
+
   // Event Listeners:
   // Shortcuts to DOM Elements:
   let signOutButtonElement = document.getElementById('logoutButton');
@@ -296,6 +300,20 @@ document.addEventListener('DOMContentLoaded', () => {
   signOutButtonElement.addEventListener('click', logoutUser);
   signInElement.addEventListener('click', loginUser);
   submitElement.addEventListener('click', submitVote);
+
+  let fadeBegin = 25;
+  let fadeFinish = 50;
+  let fadingElement = document.getElementById('GCPIcon');
+
+  window.addEventListener('scroll', () => {
+    let offset = $(document).scrollTop(); let opacity = 0;
+    if ( offset <= fadeBegin ) {
+      opacity = 1;
+    } else if ( offset <= fadeFinish ) {
+      opacity = 1 - offset / fadeFinish;
+    }
+    fadingElement.style['opacity'] = opacity;
+  });
 
   // initialize Firebase:
   authUser();
