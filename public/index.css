@@ -25,9 +25,16 @@ p{font-family: 'Noto Sans';}
 #intro{
   background-color: #039BE5;
   height:95vh;
-  min-height:100%;
+  min-height:95%;
 }
 
+#HeaderText{
+  text-align:center; color: #ECEFF1; padding-top: 2.5%; margin-top: 0%
+}
+#ParagraphText{
+  text-align:center; 
+  color:#ECEFF1
+}
 
 #footer{
   /* color: rgba(0,0,0,0.4);  */
