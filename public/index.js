@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
   // // The Firebase SDK is initialized and available here!
   //
@@ -9,123 +9,297 @@ document.addEventListener('DOMContentLoaded', function() {
   //
   // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-    let app = firebase.app();
-    let db = firebase.firestore();
-    // Disable deprecated features
-    db.settings({
-        timestampsInSnapshots: true
-    });
+  let app = firebase.app();
+  let db = firebase.firestore();
+  // Disable deprecated features
+  db.settings({
+    timestampsInSnapshots: true,
+  });
 
-    var modal = document.querySelectorAll('.modal');
-    var modals = M.Modal.init(modal);
+  let modal = document.querySelectorAll('.modal');
+  let modals = M.Modal.init(modal);
 
-    // Firebase Auth:
-    function authUser() {
-        // Listen to auth state changes.
-        firebase.auth().onAuthStateChanged(authStateObserver);
+  /** Firebase Auth: */
+  function authUser() {
+    // Listen to auth state changes.
+    firebase.auth().onAuthStateChanged(authStateObserver);
+  }
+
+  /**
+  * Auth State Change:
+  * Triggers the auth state change for instance when user signs-in or out.
+  * @param {userAuth} user
+  */
+  function authStateObserver(user) {
+    if (user) { // User is signed in!
+      // Set the user's profile pic and name.
+      // Show user's profile and sign-out button.
+      signOutButtonElement.classList.remove('hide');
+
+      // Hide sign-in button.
+      signInElement.classList.add('hide');
+    } else { // User is signed out!
+      // Hide user's profile and sign-out button.
+      signOutButtonElement.classList.add('hide');
+
+      // Show sign-in button.
+      signInElement.classList.remove('hide');
     }
+  }
 
-    //Auth State Change:
-    // Triggers when the auth state change for instance when the user signs-in or signs-out.
-    function authStateObserver(user) {
-        if (user) { // User is signed in!
-            // Set the user's profile pic and name.
-            // Show user's profile and sign-out button.
-            uploadButtonElement.classList.remove('hide');
-            signOutButtonElement.classList.remove('hide');
+  /** Returns true if a user is signed-in.
+   * @return {boolean} isUserSignedIn
+  */
+  function isUserSignedIn() {
+    return Boolean(firebase.auth().currentUser);
+  }
 
-            // Hide sign-in button.
-            signInElement.classList.add('hide');
+  /** Login Users: */
+  function loginUser() {
+    // Sign in Firebase using popup auth and Google as the identity provider.
+    let provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+        .then((userCredential) => {
+          db.collection('users').doc(userCredential.user.uid).get()
+              .then((snapshot) => {
+                if (snapshot.exists) {
+                  return null;
+                } else {
+                  db.collection('users')
+                      .doc(userCredential.user.uid)
+                      .set({
+                        hasVoted: false,
+                        hasSubmitted: false,
+                        UID: userCredential.user.uid,
+                      })
+                      .then((docRef) => {
+                        return docRef;
+                      })
+                      .catch((error) => {
+                        return error;
+                      });
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                return error;
+              });
+        })
+        .catch((error) => {
+          console.log(error);
+          return error;
+        });
+  }
 
-        } else { // User is signed out!
-            // Hide user's profile and sign-out button.
-            uploadButtonElement.classList.add('hide');
-            signOutButtonElement.classList.add('hide');
+  /**   // Logout Users: */
+  function logoutUser() {
+    // Sign out of Firebase.
+    firebase.auth().signOut();
+  }
 
-            // Show sign-in button.
-            signInElement.classList.remove('hide');
-        }
-    }
+  /**   // Upload Project:
+   * @param {eventListener} e
+   * @return {null}
+  */
+  function submitVote(e) {
+    // Prevent from sending:
+    e.preventDefault();
+    let elem = document.getElementById('confirmVote');
+    let input = document.getElementById('inputID');
 
-    // Returns true if a user is signed-in.
-    function isUserSignedIn() {
-        return !!firebase.auth().currentUser;
-    }
 
-    // Login Users:
-    function loginUser() {
-        // Sign in Firebase using popup auth and Google as the identity provider.
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider);
-    }
+    // Cast Vote:
+    const uid = firebase.auth().currentUser.uid;
+    let proj = db.collection('projects').doc(input.value);
+    let user = db.collection('users').doc(uid);
 
-    // Logout Users:
-    function logoutUser() {
-        // Sign out of Firebase.
-        firebase.auth().signOut();
-    }
-
-    // Upload Project:
-    function submitProject(e){
-        //Prevent from sending:
-        e.preventDefault();
-        //Get Upload Modal and close it:
-        let elem = document.getElementById('uploadModal');
-        let Modal = M.Modal.getInstance(elem);
-        Modal.close();
-        //Add User's project:
-        let groupName = document.getElementById('groupName').value;
-        let githubLink = document.getElementById('githubLink').value;
-        let groupOne = document.getElementById('groupOne').value;
-        let groupTwo = document.getElementById('groupTwo').value;
-        let groupThree = document.getElementById('groupThree').value;
-        let image = document.getElementById('fileLink').files[0];
-        let imageURL = document.getElementById('fileLink').files[0].name;
-
-        db.collection("users").add({
-            groupName: groupName,
-            githubLink: githubLink,
-            groupOne: groupOne,
-            groupTwo: groupTwo,
-            groupThree: groupThree,
-        }).then(function(docRef){
-            let filePath = firebase.auth().currentUser.uid +  '/' + imageURL;
-            return firebase.storage().ref(filePath).put(image).then(function (fileSnapshot) {
-                return fileSnapshot.ref.getDownloadURL().then((url) => {
-                    return docRef.update({
-                        imageURL: url,
-                        storageUri: fileSnapshot.metadata.fullPath
-                    }).then(() => {
-                        M.toast({html:'Thank you! The project will be reviewed and posted ASAP.'});
-                    });
-                });
-            });
-        }).catch(function(error){
-            M.toast({html:'There was an error. Please get in touch if it happens again!'});
+    // Check if user has voted:
+    user.get().then((docRef) => {
+      if (docRef.data().hasVoted) {
+        M.toast({html: 'You have voted already!'});
+        return null;
+      }
+    })
+        .catch((error) => {
+          console.log(error);
         });
 
+    db.runTransaction((transaction) => {
+      // This code may get re-run multiple times if there are conflicts.
+      return transaction.get(proj).then((projDoc) => {
+        if (!projDoc.exists) {
+          throw 'Document does not exist!';
+        }
+
+        console.log(projDoc);
+        console.log(projDoc.data());
+        console.log(projDoc.data().votes);
+
+        let newPopulation = 1;
+
+        if (projDoc.data().votes == null) {
+          transaction.update(proj, {votes: newPopulation});
+        } else {
+          console.log(projDoc.data().votes);
+          let newVote = projDoc.data().votes + 1;
+          console.log(newVote);
+          transaction.update(proj, {votes: newVote});
+        }
+
+        transaction.update(user, {hasVoted: true});
+      });
+    }).then(() => {
+      M.toast({html: 'You have casted your vote! Results will be announced soon! Thank you!'});
+      return null;
+      console.log('Transaction successfully committed!');
+    }).catch((error) => {
+      console.log('Transaction failed: ', error);
+    });
+
+    let Modal = M.Modal.getInstance(elem);
+    Modal.close();
+  }
+
+  /**   // Upload Project:
+   * @param {file} image
+   * @return {Promise} DictObject
+  */
+  function uploadFile(image) {
+    let imageURL = document.getElementById('fileLink').files[0].name;
+    const filePath = firebase.auth().currentUser.uid + '/' +imageURL;
+    return new Promise(((resolve, reject) => {
+      firebase.storage().ref(filePath).put(image)
+          .then((fileSnapshot) => {
+            fileSnapshot.ref.getDownloadURL()
+                .then((url) => {
+                  let data = {
+                    storageUri: fileSnapshot.metadata.fullPath,
+                    imageURL: url,
+                  };
+                  resolve(data);
+                })
+                .catch((error) => {
+                  console.log(error);
+                  reject(error);
+                });
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+    }));
+  }
+
+
+  /** Display Project: */
+  function displayProject() {
+    db.collection('projects').get()
+        .then((querySnapshot) => {
+          let index = 0;
+          querySnapshot.forEach( (doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            projectHTML(doc.id, doc.data(), index);
+            index++;
+            return null;
+          });
+        }).catch((error) => {
+          console.log('error' + error);
+          return error;
+        });
+  }
+
+  function setModalID(event) {
+    event.preventDefault();
+
+    const projectID = event.path[4].id;
+
+    let submitForm = document.getElementById('voteForm').elements;
+    submitForm['projectID'].value = projectID;
+  }
+
+
+  /** Outputs data from DB to HTML
+   * @param {string} docID
+   * @param {docRef} docDATA
+   * @param {int} index
+   */
+  function projectHTML(docID, docDATA, index) {
+    let githubLink = '';
+    if (docDATA.githubLink.length != 0) {
+      githubLink = `<a href=${docDATA.githubLink}><i id="projectFeather" data-feather="github"></i></a>`;
     }
 
-    // Display Project:
-    function displayProject(){
+    const projName = `project${index}`;
+    const projButton = `projectBtn${index}`;
 
+
+    let div = document.createElement('div');
+    div.className = 'row';
+    div.style = 'text-align:center; padding-top:0px;';
+    div.id = docID;
+
+    console.log(docDATA);
+    console.log(docDATA.imageURL);
+    if (docDATA.imageURL === undefined) {
+      if (docDATA.githubLink.length != 0) {
+        githubLink = `<a href=${docDATA.githubLink} style="color:#ECEFF1;"><i id="projectFeather" data-feather="github"></i></a>`;
+      }
+      div.innerHTML = `<div class='card light-blue darken-1'>
+        <div class='card-content white-text'>
+          <a href="#confirmVote" id=${projButton} class='modal-trigger btn-floating halfway-fab waves-effect waves-light grey lighten-4'> <i class='material-icons' style="color: #039BE5"> add </i> </a>
+
+          <span class="card-title" id="${projName}">${docDATA.name} </span>
+          ${githubLink}
+          <p>${docDATA.projectDisc}</p>
+          <p>${docDATA.GCPDisc}</p>
+        </div>
+      </div>
+      `;
+    } else {
+      div.innerHTML = `
+        <div class="card">
+          <div class="card-image">
+            <img src=${docDATA.imageURL} alt='ProjectScreenshot'>
+            <span class='card-title' id="${projName}">${docDATA.name}</span>
+            <a href="#confirmVote" id=${projButton} class='modal-trigger btn-floating halfway-fab waves-effect waves light-blue darken-1'> <i class='material-icons'> add </i> </a>
+          </div>
+          <div class='card-content'>
+            ${githubLink}
+            <p>${docDATA.projectDisc}</p>
+            <p>${docDATA.GCPDisc}</p>
+          </div>
+        </div>`;
     }
 
-    // Event Listeners:
-    // Shortcuts to DOM Elements:
-    let uploadProjectElement = document.getElementById('uploadForm');
-    let uploadButtonElement = document.getElementById('uploadButton');
-    let signOutButtonElement = document.getElementById('logoutButton');
-    let signInElement = document.getElementById('loginButton');
 
+    if (index % 2 === 0) {
+      $('#row1').append(div);
+      // $('#row1').append('<div class="divider"></div>');
+      feather.replace();
+    } else {
+      $('#row2').append(div);
+      // $('#row2').append('<div class="divider"></div>');
+      feather.replace();
+    }
 
-    // Saves message on form submit.
-    uploadProjectElement.addEventListener('submit',submitProject);
-    signOutButtonElement.addEventListener('click', logoutUser);
-    signInElement.addEventListener('click',loginUser);
+    let anchorButton = document.getElementById(projButton);
+    anchorButton.addEventListener('click', setModalID);
+  }
 
-    // initialize Firebase
-    authUser();
+  // Event Listeners:
+  // Shortcuts to DOM Elements:
+  let signOutButtonElement = document.getElementById('logoutButton');
+  let signInElement = document.getElementById('loginButton');
+  let submitElement = document.getElementById('submitVote');
+
+  // Saves message on form submit.
+  signOutButtonElement.addEventListener('click', logoutUser);
+  signInElement.addEventListener('click', loginUser);
+  submitElement.addEventListener('click', submitVote);
+
+  // initialize Firebase:
+  authUser();
+  displayProject();
 });
 
 
